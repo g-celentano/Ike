@@ -18,20 +18,21 @@ struct ContentView: View {
             // horizontal stack for the actions------------------------------------------------------
             HStack{
                 Button(action: {}) {
-                   Text("+").font(.system(size: 36))
+                   //Text("+").font(.system(size: 36))
+                    Image(systemName: "plus").imageScale(.large)
                 }
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: screenWidth*0.05))
+                .padding(.trailing, screenWidth*0.05)
             }
             .frame(width: screenWidth, alignment: .trailing)
-            .padding(EdgeInsets(top: screenHeight*0.05, leading: 0, bottom: 0, trailing: 0))
+            .padding(.top, screenHeight*0.05)
             
             
             
             //space reserved for the pie chart------------------------------------------------------
             ZStack{
-                
+               
             }
-            .frame(width: screenWidth*0.65,height: screenWidth*0.65)
+            .frame(width: screenWidth * 0.65,height: screenWidth * 0.65)
             .background(.red)
             
             
@@ -44,15 +45,20 @@ struct ContentView: View {
             // space for the task list------------------------------------------------------
             VStack{
                 TaskList()
+                    .background(.red)
                     .cornerRadius(10)
+                
+                    
             }
             .frame(width: screenWidth*0.9)
-            .padding(EdgeInsets(top: 0, leading: 0, bottom: screenHeight*0.05, trailing: 0))
+            .padding(.bottom, screenHeight*0.05)
+            
             
             
             
         }
         .frame(width: screenWidth, height: screenHeight, alignment: .top)
+        .background(Color("BG"))
         
             
        

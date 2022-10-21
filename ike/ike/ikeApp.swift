@@ -45,26 +45,44 @@ struct Task : Identifiable{
 }
 
 
-var tasks = [
-    Task(taskName: "Study for the ADA", deadline: "26/10/2022", priority:"Schedule It"),
-    Task(taskName: "Study MAPI", deadline: "25/10/2022", priority:"Do It"),
-    Task(taskName: "Walk the dog", deadline: "25/10/2022", priority:"Delegate It"),
-    Task(taskName: "Do the laundry", deadline: "25/10/2022", priority:"Delete It"),
-]
 
 struct TaskList: View {
+    @State var tasks = [
+        Task(taskName: "Study for the ADA", deadline: "26/10/2022", priority:"Schedule It"),
+        Task(taskName: "Study MAPI", deadline: "25/10/2022", priority:"Do It"),
+        Task(taskName: "Walk the dog", deadline: "29/10/2022", priority:"Delegate It"),
+        Task(taskName: "Do the laundry", deadline: "21/10/2022", priority:"Delete It"),
+    ]
+    
     var body: some View {
-        
+       
         List {
-            ForEach(tasks) { task in
-                Text(task.taskName)
-                    .listRowBackground(task.priority == "Do It" ? Color.red.opacity(0.8) :
-                                        task.priority == "Schedule It" ? Color.orange.opacity(0.8) :
-                                        task.priority == "Delegate It" ? Color.green.opacity(0.7) :
-                                        task.priority == "Delete It" ? Color.yellow.opacity(0.7) : Color.gray)
+            ForEach(self.tasks.indices) { idx in
+                HStack{
+                    Text(self.tasks[idx].taskName)
+                    Spacer()
+                    Text(self.tasks[idx].deadline)
+                        .foregroundColor(Color("Deadline Text"))
+                       
+                   
                 }
+                .listRowBackground(Color("\(self.tasks[idx].priority) Task Priority"))
+                .swipeActions {
+                        //--------------delete task button
+                        Button(action: {
+                          
+                           
+                        }) {
+                            Image(systemName: "trash").imageScale(.large)
+                        }.tint(Color("Delete Task"))
+                        //--------------complete task button
+                        Button(action: {}) {
+                            Image(systemName: "checkmark").imageScale(.large)
+                        }.tint(Color("Complete Task"))
                     
-        }
+                }
+            }
+        }.listStyle(.plain)
     }
 }
 
