@@ -39,7 +39,7 @@ struct Task : Identifiable{
     let id = UUID()
     var taskName : String
     var deadline: String
-    var priority: String
+    var priority: Int
     //var not_freq: Notification
     
 }
@@ -48,25 +48,32 @@ struct Task : Identifiable{
 
 struct TaskList: View {
     @State var tasks = [
-        Task(taskName: "Study for the ADA", deadline: "26/10/2022", priority:"Schedule It"),
-        Task(taskName: "Study MAPI", deadline: "25/10/2022", priority:"Do It"),
-        Task(taskName: "Walk the dog", deadline: "29/10/2022", priority:"Delegate It"),
-        Task(taskName: "Do the laundry", deadline: "21/10/2022", priority:"Delete It"),
+        Task(taskName: "Study for the ADA", deadline: "26/10/2022", priority:2),
+        Task(taskName: "Study MAPI", deadline: "25/10/2022", priority:1),
+        Task(taskName: "Walk the dog", deadline: "29/10/2022", priority:3),
+        Task(taskName: "Do the laundry", deadline: "21/10/2022", priority:0),
+    ]
+    
+    let priorities = [
+    "Delete It",
+    "Delegate It",
+    "Schedule It",
+    "Do It"
     ]
     
     var body: some View {
        
         List {
-            ForEach(self.tasks.indices) { idx in
+            ForEach(self.tasks) { task in
                 HStack{
-                    Text(self.tasks[idx].taskName)
+                    Text(task.taskName)
                     Spacer()
-                    Text(self.tasks[idx].deadline)
+                    Text(task.deadline)
                         .foregroundColor(Color("Deadline Text"))
                        
                    
                 }
-                .listRowBackground(Color("\(self.tasks[idx].priority) Task Priority"))
+                .listRowBackground(Color("\(priorities[task.priority]) Task Priority"))
                 .swipeActions {
                         //--------------delete task button
                         Button(action: {
