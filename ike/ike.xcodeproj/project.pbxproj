@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E705BC452906E83C00BBFA4E /* task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705BC442906E83C00BBFA4E /* task.swift */; };
+		E705BC472906E84900BBFA4E /* detailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705BC462906E84900BBFA4E /* detailsView.swift */; };
 		E76C761429003EFC00D451E8 /* ikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C761329003EFC00D451E8 /* ikeApp.swift */; };
 		E76C761629003EFC00D451E8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C761529003EFC00D451E8 /* ContentView.swift */; };
 		E76C761829003EFC00D451E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76C761729003EFC00D451E8 /* Assets.xcassets */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E705BC442906E83C00BBFA4E /* task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = task.swift; path = "../../../PeakyCorders local copy/ike/ike/task.swift"; sourceTree = "<group>"; };
+		E705BC462906E84900BBFA4E /* detailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = detailsView.swift; path = "../../../PeakyCorders local copy/ike/ike/detailsView.swift"; sourceTree = "<group>"; };
 		E76C761029003EFC00D451E8 /* ike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E76C761329003EFC00D451E8 /* ikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ikeApp.swift; sourceTree = "<group>"; };
 		E76C761529003EFC00D451E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +99,8 @@
 		E76C761229003EFC00D451E8 /* ike */ = {
 			isa = PBXGroup;
 			children = (
+				E705BC462906E84900BBFA4E /* detailsView.swift */,
+				E705BC442906E83C00BBFA4E /* task.swift */,
 				E76C761329003EFC00D451E8 /* ikeApp.swift */,
 				E76C761529003EFC00D451E8 /* ContentView.swift */,
 				E76C761729003EFC00D451E8 /* Assets.xcassets */,
@@ -260,6 +266,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E76C761629003EFC00D451E8 /* ContentView.swift in Sources */,
+				E705BC472906E84900BBFA4E /* detailsView.swift in Sources */,
+				E705BC452906E83C00BBFA4E /* task.swift in Sources */,
 				E76C761429003EFC00D451E8 /* ikeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

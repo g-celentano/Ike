@@ -5,6 +5,31 @@
 //  Created by Gaetano Celentano on 19/10/22.
 //
 
+let priorities = [
+"Delete It",
+"Delegate It",
+"Schedule It",
+"Do It"
+]
+
+let NotFrequencies = [
+    "Every Hour",
+    "Every Two Hours",
+    "Every Three Hours",
+    "Every Four Hours",
+    "Every Five Hours",
+    "Every Ten Hours",
+    "Every Day",
+    "Every Two Days",
+    "Every Three Days",
+    "Every Four Days",
+    "Every Five Days",
+    "Every Six Days",
+    "Every Week",
+    "Every Week and a half",
+    "Every Two Weeks",
+]
+
 import SwiftUI
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
@@ -17,7 +42,8 @@ struct ContentView: View {
     
     var body: some View {
         
-        
+        NavigationView{
+         
         VStack {
             // horizontal stack for the actions------------------------------------------------------
             HStack{
@@ -34,12 +60,6 @@ struct ContentView: View {
                 
                 .fullScreenCover(isPresented: $isPresented, content: FullScreenModalView.init)
           
-            
-            /*   Button(action: {}) {
-             //Text("+").font(.system(size: 36))
-             Image(systemName: "plus").imageScale(.large)
-             }
-             .padding(.trailing, screenWidth*0.05)*/
         }
         .frame(width: screenWidth, alignment: .trailing)
         .padding(.top, screenHeight*0.05)
@@ -82,6 +102,7 @@ struct ContentView: View {
        
         
     }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -90,12 +111,6 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct Taskini: View{
-    var task: Task
-    var body: some View{
-        Text("\(task.taskName)")
-    }
-}
 
 struct FullScreenModalView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -106,14 +121,10 @@ struct FullScreenModalView: View {
     @State private var urgent = false
     @State private var important = false
     @State var priority = 0
+    @State var selectedDate = Date()
+    @State var selectedNotFreq="Every Day"
     
-    let priorities = [
-    "Delete It",
-    "Delegate It",
-    "Schedule It",
-    "Do It"
-    ]
-    
+
     var body: some View {
         ZStack{
                 VStack {
@@ -134,82 +145,97 @@ struct FullScreenModalView: View {
                         .font(.largeTitle)
                     
                     
-                    TextField("Task name", text: $task_modal)
-                    
-                        .submitLabel(.join)
-                        .foregroundColor(.black)
-                        .padding()
-                        .font(.title)
-                    
+                    HStack{
+                        TextField("Task Name", text: $task_modal ).font(.title3)
+                        Button(action:{
+                            task_modal = ""
+                        }){
+                            Image(systemName: "xmark.circle.fill").foregroundColor(.gray)
+                        }
+                            
+                    }
+                    .frame(height: screenHeight*0.05)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.gray.opacity(0.4))
+                            .frame(width: nil,height: 1),
+                        alignment: .bottom
+                    )
+                    .padding(EdgeInsets(top: 10, leading: screenWidth*0.05, bottom: 0, trailing: screenWidth*0.05))
+                 
                     
                     HStack{
                         
                         Text("Deadline")
-                            .padding(.horizontal)
+                            .font(.title2)
+                            .fontWeight(.bold)
                         
-                        TextField("MM/DD/YYYY", text: $expire)
+                        Spacer()
+                        HStack{
+                            DatePicker("", selection: $selectedDate, displayedComponents: .date)
+                            Image(systemName: "calendar").imageScale(.large)
+                            
+                        }
+                        .frame(width: screenWidth*0.5, height: screenHeight*0.05)
+                        .padding()
                         
-                            .submitLabel(.join)
-                            .foregroundColor(.black)
-                            .padding(.horizontal, screenWidth*0.25)
                         
-                        
-                    }
-                    .padding(.top, 12)
-                    
-                    Text("Priority Assign")
-                        .fontWeight(.bold)
-                        .padding(.horizontal, -180.0)
-                        .padding(.top, 24)
-                        .font(.title2)
-                    
+                    }.frame(width: screenWidth*0.9)
                     
                     VStack{
-                        Toggle("Urgent", isOn: $urgent)
-                            .font(.body)
-                            .padding(.leading)
-                            .padding (.top, 8)
-                            .padding(.horizontal)
+                        Text("Priority Assign")
+                            .fontWeight(.bold)
+                            .font(.title3)
+                            .frame(width: screenWidth*0.9, alignment: .leading)
+                        
                         Toggle("Important", isOn: $important)
-                            .padding(.leading)
-                            .padding(.horizontal)
-                    }
+                        Toggle("Urgent", isOn: $urgent)
+                        
+                        
+                           
+                    }.frame(width: screenWidth*0.9)
                     
                     HStack{
-                        Text("Priority assigned : ").font(.headline).fontWeight(.semibold)
-                            .padding(.leading, screenWidth*0.02)
+                        Text("Priority assigned : ").font(.title3).fontWeight(.semibold)
+                        Spacer()
                         ZStack{
-                            
                                 RoundedRectangle(cornerRadius: 20).fill(Color("\(priorities[priority]) Task Priority"))
                             Text(priorities[priority])
-                        }.frame(width: screenWidth*0.50, height: screenHeight*0.06)
-                    }
+                        }.frame(width: screenWidth*0.55, height: screenHeight*0.06)
+                    }.frame(width: screenWidth*0.9)
+                   
                     HStack{
-                        Text("Notification Frequency")
+                        Text("Notifications Frequency").font(.title3).fontWeight(.semibold)
+                        Spacer()
+                        Picker("", selection: $selectedNotFreq) {
+                                ForEach(NotFrequencies, id: \.self) {
+                                    Text($0)
+                                }
+                        }
                     }
+                    .frame(width: screenWidth*0.9, alignment: .centerLastTextBaseline)
+                    .padding(.top, screenWidth*0.05)
                     
                     Spacer()
                     HStack{
-                        Button{
-                            
-                        }label:{
-                            Text("Cancel")
+                        Button(action: cancelAction){
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 15).fill(.red)
+                                Text("Cancel")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                            }.frame(width: screenWidth*0.45, height: screenHeight*0.07)
                         }
                         
-                        .foregroundColor(.red)
-                        .padding(.horizontal, screenWidth*0.16)
-                        .contentShape(Rectangle())
-                        
-                        Button{
-                            
-                        }label:{
-                            Text("Create New Task")
+                        Button(action: createTask){
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 15).fill(.blue)
+                                Text("Create Task")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                            }.frame(width: screenWidth*0.45, height: screenHeight*0.07)
                         }
-                        
-                        .foregroundColor(.blue)
-                        .padding(.horizontal, screenWidth*0.16)
-                        .contentShape(Rectangle())
-                    }
+                    }.frame(width: screenWidth*0.9)
                     
                 }
                 .onChange (of: important, perform: { newValue in
@@ -242,9 +268,16 @@ struct FullScreenModalView: View {
                         priority = 0}
                     
                         })
-                .frame(alignment: .top)
+                .frame(width: screenWidth, alignment: .top)
                 .background(Color("Modal BG"))
             }
         }
+    
+    func cancelAction(){
+        
+    }
+    func createTask(){
+        
+    }
 }
 //aggiungi titolo, modifica rettangolino priorità, aggiungi le notifiche
