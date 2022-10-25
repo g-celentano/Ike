@@ -13,6 +13,7 @@ let priorities = [
 ]
 
 let NotFrequencies = [
+    "No Notifications",
     "Every Hour",
     "Every Two Hours",
     "Every Three Hours",
@@ -57,7 +58,6 @@ struct ContentView: View {
                         .font(.largeTitle)
                 }
                 .padding(.trailing, screenWidth*0.05)
-                
                 .fullScreenCover(isPresented: $isPresented, content: FullScreenModalView.init)
           
         }
@@ -91,9 +91,6 @@ struct ContentView: View {
         .frame(width: screenWidth*0.9)
         .padding(.bottom, screenHeight*0.05)
         
-        
-        
-        
     }
         .frame(width: screenWidth, height: screenHeight, alignment: .top)
         .background(Color("BG"))
@@ -111,6 +108,7 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+//modal view for the add of a new task
 
 struct FullScreenModalView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -141,8 +139,8 @@ struct FullScreenModalView: View {
                     
                     Text("Add New Task")
                         .fontWeight(.bold)
-                        .padding(.leading, screenWidth*(-0.32))
                         .font(.largeTitle)
+                        .frame(width: screenWidth*0.9, alignment: .leading)
                     
                     
                     HStack{
@@ -196,13 +194,19 @@ struct FullScreenModalView: View {
                     }.frame(width: screenWidth*0.9)
                     
                     HStack{
-                        Text("Priority assigned : ").font(.title3).fontWeight(.semibold)
+                        Text("Priority assigned : ")
+                            .font(.title2)
+                            .fontWeight(.semibold)
                         Spacer()
                         ZStack{
-                                RoundedRectangle(cornerRadius: 20).fill(Color("\(priorities[priority]) Task Priority"))
+                                RoundedRectangle(cornerRadius: 20)
+                                .fill(Color("\(priorities[priority]) Task Priority"))
                             Text(priorities[priority])
-                        }.frame(width: screenWidth*0.55, height: screenHeight*0.06)
-                    }.frame(width: screenWidth*0.9)
+                        }.frame(width: screenWidth*0.5,height: screenHeight*0.05)
+                       
+                    }
+                    .frame(width: screenWidth*0.9, height: screenHeight*0.1)
+                    .padding(.top, screenHeight*0.01)
                    
                     HStack{
                         Text("Notifications Frequency").font(.title3).fontWeight(.semibold)
