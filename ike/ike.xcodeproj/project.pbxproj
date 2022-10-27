@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E705BC452906E83C00BBFA4E /* task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705BC442906E83C00BBFA4E /* task.swift */; };
-		E705BC472906E84900BBFA4E /* detailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705BC462906E84900BBFA4E /* detailsView.swift */; };
+		E705BC472906E84900BBFA4E /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705BC462906E84900BBFA4E /* DetailsView.swift */; };
+		E7437DAC290AB917000B8D6A /* pieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7437DAB290AB917000B8D6A /* pieView.swift */; };
+		E7437DAE290AC32C000B8D6A /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7437DAD290AC32C000B8D6A /* TaskRow.swift */; };
+		E76AE783290926CA008E2E13 /* Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E76AE781290926CA008E2E13 /* Tasks.xcdatamodeld */; };
+		E76AE7852909273D008E2E13 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76AE7842909273D008E2E13 /* DataController.swift */; };
+		E76AE787290933F0008E2E13 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76AE786290933F0008E2E13 /* TaskList.swift */; };
 		E76C761429003EFC00D451E8 /* ikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C761329003EFC00D451E8 /* ikeApp.swift */; };
 		E76C761629003EFC00D451E8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C761529003EFC00D451E8 /* ContentView.swift */; };
 		E76C761829003EFC00D451E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76C761729003EFC00D451E8 /* Assets.xcassets */; };
@@ -36,8 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E705BC442906E83C00BBFA4E /* task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = task.swift; path = "../../../PeakyCorders local copy/ike/ike/task.swift"; sourceTree = "<group>"; };
-		E705BC462906E84900BBFA4E /* detailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = detailsView.swift; path = "../../../PeakyCorders local copy/ike/ike/detailsView.swift"; sourceTree = "<group>"; };
+		E705BC462906E84900BBFA4E /* DetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailsView.swift; path = "../../../PeakyCorders local copy/ike/ike/DetailsView.swift"; sourceTree = "<group>"; };
+		E7437DAB290AB917000B8D6A /* pieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pieView.swift; sourceTree = "<group>"; };
+		E7437DAD290AC32C000B8D6A /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
+		E76AE782290926CA008E2E13 /* Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasks.xcdatamodel; sourceTree = "<group>"; };
+		E76AE7842909273D008E2E13 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		E76AE786290933F0008E2E13 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		E76C761029003EFC00D451E8 /* ike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E76C761329003EFC00D451E8 /* ikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ikeApp.swift; sourceTree = "<group>"; };
 		E76C761529003EFC00D451E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -99,8 +107,12 @@
 		E76C761229003EFC00D451E8 /* ike */ = {
 			isa = PBXGroup;
 			children = (
-				E705BC462906E84900BBFA4E /* detailsView.swift */,
-				E705BC442906E83C00BBFA4E /* task.swift */,
+				E76AE781290926CA008E2E13 /* Tasks.xcdatamodeld */,
+				E76AE786290933F0008E2E13 /* TaskList.swift */,
+				E7437DAD290AC32C000B8D6A /* TaskRow.swift */,
+				E7437DAB290AB917000B8D6A /* pieView.swift */,
+				E76AE7842909273D008E2E13 /* DataController.swift */,
+				E705BC462906E84900BBFA4E /* DetailsView.swift */,
 				E76C761329003EFC00D451E8 /* ikeApp.swift */,
 				E76C761529003EFC00D451E8 /* ContentView.swift */,
 				E76C761729003EFC00D451E8 /* Assets.xcassets */,
@@ -265,9 +277,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E76AE787290933F0008E2E13 /* TaskList.swift in Sources */,
+				E7437DAC290AB917000B8D6A /* pieView.swift in Sources */,
 				E76C761629003EFC00D451E8 /* ContentView.swift in Sources */,
-				E705BC472906E84900BBFA4E /* detailsView.swift in Sources */,
-				E705BC452906E83C00BBFA4E /* task.swift in Sources */,
+				E7437DAE290AC32C000B8D6A /* TaskRow.swift in Sources */,
+				E76AE7852909273D008E2E13 /* DataController.swift in Sources */,
+				E705BC472906E84900BBFA4E /* DetailsView.swift in Sources */,
+				E76AE783290926CA008E2E13 /* Tasks.xcdatamodeld in Sources */,
 				E76C761429003EFC00D451E8 /* ikeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +636,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E76AE781290926CA008E2E13 /* Tasks.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E76AE782290926CA008E2E13 /* Tasks.xcdatamodel */,
+			);
+			currentVersion = E76AE782290926CA008E2E13 /* Tasks.xcdatamodel */;
+			path = Tasks.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E76C760829003EFC00D451E8 /* Project object */;
 }

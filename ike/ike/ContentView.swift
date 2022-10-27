@@ -36,14 +36,26 @@ let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
 
+
+
+
+
+
 struct ContentView: View {
     //getting the screen boundaries for sizing and placing
    
     @State private var isPresented = false
     
+    
+    
+    @Environment(\.managedObjectContext) var moc
+    
+    
+    @FetchRequest(sortDescriptors: []) var tasks : FetchedResults<Task>
+    
     var body: some View {
         
-        NavigationView{
+        NavigationStack{
          
         VStack {
             // horizontal stack for the actions------------------------------------------------------
@@ -68,10 +80,11 @@ struct ContentView: View {
         
         //space reserved for the pie chart------------------------------------------------------
         ZStack{
-            
+            pieView(tasks: tasks)
         }
         .frame(width: screenWidth * 0.65,height: screenWidth * 0.65)
-        .background(.red)
+        .padding(.bottom, screenHeight*0.05)
+        
         
         
         //space for the priority switch------------------------------------------------------
@@ -82,49 +95,70 @@ struct ContentView: View {
         
         // space for the task list------------------------------------------------------
         VStack{
-            TaskList()
-                .background(.red)
+           TaskList(tasks:tasks)
                 .cornerRadius(10)
+               
             
-            
+            //aggiungi funziona, però non si aggiorna la vista
+            //sistemare deadline in detailViews
+            //implementa save changes in detailsView e delete dalla list
+            //contare quanti task di ogni priorità e fare le percentuali sul grafico
+            //evidenziare i task di ogni fetta cliccata
+            //ordina in base al pulsante
         }
         .frame(width: screenWidth*0.9)
         .padding(.bottom, screenHeight*0.05)
         
+        
     }
         .frame(width: screenWidth, height: screenHeight, alignment: .top)
         .background(Color("BG"))
+        
+     
         
             
        
         
     }
     }
+    
+   
+    
+   
+    
+
+
 }
 
-struct ContentView_Previews: PreviewProvider {
+
+
+
+/*struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
-}
+}*/
 
 //modal view for the add of a new task
 
 struct FullScreenModalView: View {
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) var moc
+    
 
     
-    @State var task_modal = ""
-    @State var expire = ""
+    @State var modalTaskName = ""
     @State private var urgent = false
     @State private var important = false
     @State var priority = 0
     @State var selectedDate = Date()
     @State var selectedNotFreq="Every Day"
-    
+    @State var wantsDeadline = false
+    @State var deadlineOpacity = 0.0
 
     var body: some View {
         ZStack{
+            ScrollView{
                 VStack {
                     HStack{
                         Button {
@@ -144,13 +178,13 @@ struct FullScreenModalView: View {
                     
                     
                     HStack{
-                        TextField("Task Name", text: $task_modal ).font(.title3)
+                        TextField("Task Name", text: $modalTaskName ).font(.title3)
                         Button(action:{
-                            task_modal = ""
+                            modalTaskName = ""
                         }){
                             Image(systemName: "xmark.circle.fill").foregroundColor(.gray)
                         }
-                            
+                        
                     }
                     .frame(height: screenHeight*0.05)
                     .overlay(
@@ -160,25 +194,45 @@ struct FullScreenModalView: View {
                         alignment: .bottom
                     )
                     .padding(EdgeInsets(top: 10, leading: screenWidth*0.05, bottom: 0, trailing: screenWidth*0.05))
-                 
+                    
                     
                     HStack{
-                        
-                        Text("Deadline")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        
-                        Spacer()
                         HStack{
-                            DatePicker("", selection: $selectedDate, displayedComponents: .date)
-                            Image(systemName: "calendar").imageScale(.large)
+                            Text("Deadline")
+                                .frame(width: screenWidth*0.23)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                
+                            Toggle("", isOn: $wantsDeadline)
+                                .onChange(of: wantsDeadline) { newValue in
+                                if newValue {
+                                    deadlineOpacity = 1
+                                } else {
+                                    deadlineOpacity = 0
+                                }
+                            }
                             
                         }
-                        .frame(width: screenWidth*0.5, height: screenHeight*0.05)
-                        .padding()
+                        Spacer()
+                        HStack{
+                           
+                            HStack{
+                                DatePicker("", selection: $selectedDate, displayedComponents: .date)
+                                Image(systemName: "calendar").imageScale(.large)
+                            }
+                            .opacity(deadlineOpacity)
+                            .animation(.linear, value: deadlineOpacity)
+                            
+                            
+                            
+                        }
+                        .frame(width: screenWidth*0.5, height: screenHeight*0.07)
                         
                         
-                    }.frame(width: screenWidth*0.9)
+                        
+                    }
+                    .frame(width: screenWidth*0.9)
+                    .padding(.leading, screenWidth*0.02)
                     
                     VStack{
                         Text("Priority Assign")
@@ -190,7 +244,7 @@ struct FullScreenModalView: View {
                         Toggle("Urgent", isOn: $urgent)
                         
                         
-                           
+                        
                     }.frame(width: screenWidth*0.9)
                     
                     HStack{
@@ -199,22 +253,22 @@ struct FullScreenModalView: View {
                             .fontWeight(.semibold)
                         Spacer()
                         ZStack{
-                                RoundedRectangle(cornerRadius: 20)
+                            RoundedRectangle(cornerRadius: 20)
                                 .fill(Color("\(priorities[priority]) Task Priority"))
                             Text(priorities[priority])
                         }.frame(width: screenWidth*0.5,height: screenHeight*0.05)
-                       
+                        
                     }
                     .frame(width: screenWidth*0.9, height: screenHeight*0.1)
                     .padding(.top, screenHeight*0.01)
-                   
+                    
                     HStack{
                         Text("Notifications Frequency").font(.title3).fontWeight(.semibold)
                         Spacer()
                         Picker("", selection: $selectedNotFreq) {
-                                ForEach(NotFrequencies, id: \.self) {
-                                    Text($0)
-                                }
+                            ForEach(NotFrequencies, id: \.self) {
+                                Text($0)
+                            }
                         }
                     }
                     .frame(width: screenWidth*0.9, alignment: .centerLastTextBaseline)
@@ -222,7 +276,9 @@ struct FullScreenModalView: View {
                     
                     Spacer()
                     HStack{
-                        Button(action: cancelAction){
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }){
                             ZStack{
                                 RoundedRectangle(cornerRadius: 15).fill(.red)
                                 Text("Cancel")
@@ -239,7 +295,9 @@ struct FullScreenModalView: View {
                                     .foregroundColor(.white)
                             }.frame(width: screenWidth*0.45, height: screenHeight*0.07)
                         }
-                    }.frame(width: screenWidth*0.9)
+                    }
+                    .frame(width: screenWidth*0.9)
+                    
                     
                 }
                 .onChange (of: important, perform: { newValue in
@@ -257,11 +315,11 @@ struct FullScreenModalView: View {
                         priority = 0
                     }
                 }
-                    )
+                )
                 .onChange (of: urgent, perform: { newValue in
-                      if important && urgent {
-                            priority = 3
-                        }
+                    if important && urgent {
+                        priority = 3
+                    }
                     if important && !urgent {
                         priority = 2
                     }
@@ -271,17 +329,41 @@ struct FullScreenModalView: View {
                     if !important && !urgent {
                         priority = 0}
                     
-                        })
-                .frame(width: screenWidth, alignment: .top)
+                })
+                .frame(width: screenWidth, height: screenHeight*0.9, alignment: .top)
                 .background(Color("Modal BG"))
+                
             }
+            .scrollDisabled(true)
+            }
+        
         }
     
-    func cancelAction(){
-        
-    }
+    
     func createTask(){
+        var creationPriority = 0
+        switch [important,urgent] {
+        case [true, true]:
+            creationPriority=3
+        case [true, false]:
+            creationPriority=2
+        case [false, true]:
+            creationPriority=1
+        case [false, false]:
+            creationPriority=0
+        default:
+            creationPriority=0
+        }
         
+        let newTask = Task(context: moc)
+        newTask.id = UUID()
+        newTask.taskName = modalTaskName
+        newTask.deadline = wantsDeadline ? selectedDate : nil
+        newTask.priority = Int16(creationPriority)
+        
+        try? moc.save()
+
+        presentationMode.wrappedValue.dismiss()
     }
 }
 //aggiungi titolo, modifica rettangolino priorità, aggiungi le notifiche
