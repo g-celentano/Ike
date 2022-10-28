@@ -36,22 +36,18 @@ let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
 
-
-
-
-
-
 struct ContentView: View {
     //getting the screen boundaries for sizing and placing
    
     @State private var isPresented = false
     
-    
-    
+    @State var highlightPrio = ""
     @Environment(\.managedObjectContext) var moc
     
     
     @FetchRequest(sortDescriptors: []) var tasks : FetchedResults<Task>
+    
+    
     
     var body: some View {
         
@@ -70,7 +66,10 @@ struct ContentView: View {
                         .font(.largeTitle)
                 }
                 .padding(.trailing, screenWidth*0.05)
-                .fullScreenCover(isPresented: $isPresented, content: FullScreenModalView.init)
+                .sheet(isPresented: $isPresented){
+                    AddTaskModalView()
+                }
+                
           
         }
         .frame(width: screenWidth, alignment: .trailing)
@@ -80,7 +79,7 @@ struct ContentView: View {
         
         //space reserved for the pie chart------------------------------------------------------
         ZStack{
-            pieView(tasks: tasks)
+            pieView(tasks: tasks, highPrio: $highlightPrio)
         }
         .frame(width: screenWidth * 0.65,height: screenWidth * 0.65)
         .padding(.bottom, screenHeight*0.05)
@@ -95,15 +94,10 @@ struct ContentView: View {
         
         // space for the task list------------------------------------------------------
         VStack{
-           TaskList(tasks:tasks)
+            TaskList(tasks: tasks, highlightPrio: $highlightPrio )
                 .cornerRadius(10)
                
-            
             //aggiungi funziona, però non si aggiorna la vista
-            //sistemare deadline in detailViews
-            //implementa save changes in detailsView e delete dalla list
-            //contare quanti task di ogni priorità e fare le percentuali sul grafico
-            //evidenziare i task di ogni fetta cliccata
             //ordina in base al pulsante
         }
         .frame(width: screenWidth*0.9)
@@ -113,25 +107,11 @@ struct ContentView: View {
     }
         .frame(width: screenWidth, height: screenHeight, alignment: .top)
         .background(Color("BG"))
-        
-     
-        
-            
-       
+         
         
     }
     }
-    
-   
-    
-   
-    
-
-
 }
-
-
-
 
 /*struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -141,11 +121,10 @@ struct ContentView: View {
 
 //modal view for the add of a new task
 
-struct FullScreenModalView: View {
+struct AddTaskModalView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var moc
     
-
     
     @State var modalTaskName = ""
     @State private var urgent = false
@@ -169,7 +148,9 @@ struct FullScreenModalView: View {
                                 .font(.largeTitle)
                         }
                         .padding(.trailing, screenWidth*0.05)
-                    }.frame(width: screenWidth, alignment: Alignment.trailing)
+                    }
+                        .frame(width: screenWidth, alignment: Alignment.trailing)
+                        .padding(.top, screenHeight*0.02)
                     
                     Text("Add New Task")
                         .fontWeight(.bold)

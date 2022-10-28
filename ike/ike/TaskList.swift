@@ -40,9 +40,11 @@ struct TaskList : View {
     
     @Environment(\.managedObjectContext) var moc
     
+    @Binding var highlightPrio : String
+    
     var body: some View{
         List {
-            ForEach(tasks) {task in
+            ForEach(highlightPrio == "" ? Array(tasks) : Array(tasks.filter{priorities[Int($0.priority)]==highlightPrio})) {task in
                 NavigationLink(destination: detailsView(task: task)){
                     HStack{
                         TaskRow(item: task)
@@ -53,18 +55,15 @@ struct TaskList : View {
             }
             .onDelete { indexSet in
                 for index in indexSet {
-                    moc.delete(tasks[index])
+                    let task = tasks[index]
+                    moc.delete(task)
                 }
-                do {
-                    try moc.save()
-                } catch {
-                    print(error.localizedDescription)
-                }
-                
+                try? moc.save()
             }
+            
         }
-        .listStyle(.plain)
         
+       
     }
    
         

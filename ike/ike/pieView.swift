@@ -51,8 +51,8 @@ struct PieceOfPie : Shape {
 struct PieChart : View {
     @ObservedObject var viewModel =  PieChartViewmodel()
     @State var selectedPieChartElement: Int? = nil
-    
-    @State var tasks : FetchedResults<Task>
+    @Binding var tasks : FetchedResults<Task>
+    @Binding var highPrio : String
     
     var body : some View {
         ZStack {
@@ -67,9 +67,19 @@ struct PieChart : View {
                         PieceOfPie(startDegree: lastDegree, endDegree: lastDegree + currentEndDegree )
                                 .fill(currentData.color)
                                 .scaleEffect(index == selectedPieChartElement ? 1.3 : 1.0 )
-                       
-                       
-                        
+                                .onTapGesture {
+                                    withAnimation {
+                                        if index == selectedPieChartElement {
+                                            self.selectedPieChartElement = nil
+                                            highPrio = ""
+                                        } else {
+                                            self.selectedPieChartElement = index
+                                            highPrio = currentData.description
+                                        }
+                                    }
+                                    
+                                    
+                                }
                         GeometryReader { geometry in
                             Text(currentData.description)
                                 .font(.custom("SF Pro Text", size :screenWidth*0.035))
@@ -80,17 +90,13 @@ struct PieChart : View {
                             
                         }
                     }
-                    .onTapGesture (count : 1, perform: { withAnimation { if index == selectedPieChartElement {self.selectedPieChartElement = nil } else {
-                        self.selectedPieChartElement = index
-                        
-                    }
-                        
-                    }
-                    })
+                   
+
                     
                 }
             }else{
                 Text("Add your first task")
+                    .font(.title)
             }
             
         }
@@ -104,26 +110,24 @@ struct PieChart : View {
         return percentage
     }
                     
-                    private func
-                getLabelCoordinate (in geoSize :CGSize, for degree : Double) -> CGPoint {
-                        let center = CGPoint(x: geoSize.width / 2, y: geoSize.height / 2)
-                        let radius = geoSize.width / 3
-                        
-                        let yCoordinate =  radius * sin(CGFloat(degree) * CGFloat.pi / 180)
-                        
-                        let xCoordinate =  radius * cos(CGFloat(degree) * CGFloat.pi / 180)
-                        
-                        return CGPoint(x: center.x + xCoordinate, y: center.y + yCoordinate)
-                        
-                    
-                        
-                    }
+    private func getLabelCoordinate (in geoSize :CGSize, for degree : Double) -> CGPoint {
+        let center = CGPoint(x: geoSize.width / 2, y: geoSize.height / 2)
+        let radius = geoSize.width / 4
+        
+        let yCoordinate =  radius * sin(CGFloat(degree) * CGFloat.pi / 180)
+        
+        let xCoordinate =  radius * cos(CGFloat(degree) * CGFloat.pi / 180)
+        
+        return CGPoint(x: center.x + xCoordinate, y: center.y + yCoordinate)
+        
+     }
                 }
 
 struct pieView: View {
     @State var tasks : FetchedResults<Task>
+    @Binding var highPrio : String
     var body: some View {
-        PieChart(tasks: tasks)
+        PieChart( tasks: $tasks, highPrio: $highPrio)
         }
     }
 
