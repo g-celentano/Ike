@@ -36,6 +36,11 @@ let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
 
+let choices = [
+    "Order by DeadLine",
+    "Order by Priority"
+]
+
 struct ContentView: View {
     //getting the screen boundaries for sizing and placing
    
@@ -44,10 +49,8 @@ struct ContentView: View {
     @State var highlightPrio = ""
     @Environment(\.managedObjectContext) var moc
     
-    
-    @FetchRequest(sortDescriptors: []) var tasks : FetchedResults<Task>
-    
-    
+    @State var selected = 0
+
     
     var body: some View {
         
@@ -56,7 +59,14 @@ struct ContentView: View {
         VStack {
             // horizontal stack for the actions------------------------------------------------------
             HStack{
-                
+               
+                NavigationLink(destination: CompletedTaskView()){
+                    ZStack{
+                        Text("Completed Tasks")
+                    }.frame(height: screenHeight*0.05)
+                        .padding(.leading, screenWidth*0.05)
+                }
+                Spacer()
                 Button {
                     isPresented.toggle()
                 } label:
@@ -79,7 +89,7 @@ struct ContentView: View {
         
         //space reserved for the pie chart------------------------------------------------------
         ZStack{
-            pieView(tasks: tasks, highPrio: $highlightPrio)
+            pieView(highPrio: $highlightPrio)
         }
         .frame(width: screenWidth * 0.65,height: screenWidth * 0.65)
         .padding(.bottom, screenHeight*0.05)
@@ -88,13 +98,14 @@ struct ContentView: View {
         
         //space for the priority switch------------------------------------------------------
         HStack{
-            OrderChoices()
+            OrderChoices(selected: $selected)
         }
         .frame(width: screenWidth*0.9)
         
         // space for the task list------------------------------------------------------
         VStack{
-            TaskList(tasks: tasks, highlightPrio: $highlightPrio )
+           
+            TaskList(highlightPrio: $highlightPrio, order: $selected)
                 .cornerRadius(10)
                
             //aggiungi funziona, però non si aggiorna la vista
@@ -107,6 +118,7 @@ struct ContentView: View {
     }
         .frame(width: screenWidth, height: screenHeight, alignment: .top)
         .background(Color("BG"))
+        
          
         
     }
@@ -131,6 +143,7 @@ struct AddTaskModalView: View {
     @State private var important = false
     @State var priority = 0
     @State var selectedDate = Date()
+    
     @State var selectedNotFreq="Every Day"
     @State var wantsDeadline = false
     @State var deadlineOpacity = 0.0
@@ -148,8 +161,9 @@ struct AddTaskModalView: View {
                                 .font(.largeTitle)
                         }
                         .padding(.trailing, screenWidth*0.05)
+                        
                     }
-                        .frame(width: screenWidth, alignment: Alignment.trailing)
+                    .frame(width: screenWidth,alignment: .trailing)
                         .padding(.top, screenHeight*0.02)
                     
                     Text("Add New Task")
@@ -196,7 +210,6 @@ struct AddTaskModalView: View {
                         }
                         Spacer()
                         HStack{
-                           
                             HStack{
                                 DatePicker("", selection: $selectedDate, displayedComponents: .date)
                                 Image(systemName: "calendar").imageScale(.large)
@@ -243,7 +256,7 @@ struct AddTaskModalView: View {
                     .frame(width: screenWidth*0.9, height: screenHeight*0.1)
                     .padding(.top, screenHeight*0.01)
                     
-                    HStack{
+                  /*HStack{
                         Text("Notifications Frequency").font(.title3).fontWeight(.semibold)
                         Spacer()
                         Picker("", selection: $selectedNotFreq) {
@@ -254,6 +267,7 @@ struct AddTaskModalView: View {
                     }
                     .frame(width: screenWidth*0.9, alignment: .centerLastTextBaseline)
                     .padding(.top, screenWidth*0.05)
+                   */
                     
                     Spacer()
                     HStack{
@@ -313,6 +327,7 @@ struct AddTaskModalView: View {
                 })
                 .frame(width: screenWidth, height: screenHeight*0.9, alignment: .top)
                 .background(Color("Modal BG"))
+                
                 
             }
             .scrollDisabled(true)

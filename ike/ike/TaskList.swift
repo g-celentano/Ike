@@ -7,23 +7,15 @@
 
 import SwiftUI
 
-struct OrderChoice : Identifiable{
-    var id : Int
-    var value : String
-}
-let choices = [
-    OrderChoice(id: 1, value: "Order by DeadLine"),
-    OrderChoice(id: 2, value: "Order by Priority"),
-]
 
 struct OrderChoices : View {
-    @State var selected = choices[0].id
+    @Binding var selected : Int
     var body: some View{
         Picker(selection: $selected, label: Text("Order Preference")) {
-            ForEach(choices) { choice in
-                Text(choice.value)
+            ForEach(0..<choices.count, id: \.self) { index in
+                Text(choices[index])
                     .onTapGesture {
-                    selected = choice.id
+                        selected = index
                 }
                     
                }
@@ -33,39 +25,82 @@ struct OrderChoices : View {
     }
 }
 
+struct TaskRow: View {
+    @ObservedObject var item: Task
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    
+    
+    
+    var body: some View{
+        Text(item.taskName ?? "Unknown Task Name")
+        Spacer()
+        if item.deadline != nil {
+            Text(item.deadline!.formatted(.dateTime.day().month().year()))
+            .foregroundColor(Color("Deadline Text"))
+            
+            }
+        }
+       
+    }
+    
+
 
 struct TaskList : View {
     
-    @State var tasks : FetchedResults<Task>
+    
     
     @Environment(\.managedObjectContext) var moc
     
     @Binding var highlightPrio : String
+    @Binding var order : Int
+    
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.priority, order: .reverse)]) var PriorityOrderTasks : FetchedResults<Task>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.deadline, order: .forward)]) var DeadlineOrderTasks : FetchedResults<Task>
     
     var body: some View{
         List {
-            ForEach(highlightPrio == "" ? Array(tasks) : Array(tasks.filter{priorities[Int($0.priority)]==highlightPrio})) {task in
-                NavigationLink(destination: detailsView(task: task)){
-                    HStack{
-                        TaskRow(item: task)
+            ForEach(highlightPrio == "" ?
+                    Array(order == 0 ? DeadlineOrderTasks : PriorityOrderTasks) :
+                    Array((order == 0 ? DeadlineOrderTasks : PriorityOrderTasks).filter{priorities[Int($0.priority)]==highlightPrio}))
+            {task in
+                if !task.done {
+                    NavigationLink(destination: detailsView(task: task)){
+                        HStack{
+                            TaskRow(item: task)
+                        }
+                        
                     }
+                    .listRowBackground(Color("\(priorities[Int(task.priority)]) Task Priority"))
+                    .swipeActions(content: {
+                        Button(role: .destructive) {
+                            moc.delete(task)
+                            try? moc.save()
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        Button{
+                            task.done = true
+                            
+                            try? moc.save()
+                        } label: {
+                            Label("Done", systemImage: "checkmark")
+                        }
+                        
+                    })}
+            }
                     
-                }
-                .listRowBackground(Color("\(priorities[Int(task.priority)]) Task Priority"))
-            }
-            .onDelete { indexSet in
-                for index in indexSet {
-                    let task = tasks[index]
-                    moc.delete(task)
-                }
-                try? moc.save()
-            }
             
         }
         
        
     }
    
-        
+    func delete (at offsets: IndexSet){
+        for offset in offsets {
+            let task = order == 0 ? DeadlineOrderTasks[offset] : PriorityOrderTasks[offset]
+            moc.delete(task)
+        }
+        try? moc.save()
+    }
     
 }

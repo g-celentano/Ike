@@ -51,8 +51,8 @@ struct PieceOfPie : Shape {
 struct PieChart : View {
     @ObservedObject var viewModel =  PieChartViewmodel()
     @State var selectedPieChartElement: Int? = nil
-    @Binding var tasks : FetchedResults<Task>
     @Binding var highPrio : String
+    @FetchRequest(sortDescriptors: []) var tasks : FetchedResults<Task>
     
     var body : some View {
         ZStack {
@@ -104,9 +104,12 @@ struct PieChart : View {
     
     func getPercentage(desc : String) -> Double{
         let prioCount = tasks.filter { task in
-            priorities[Int(task.priority)] == desc
+           priorities[Int(task.priority)] == desc
+        }
+        let prioNotDoneCount = prioCount.filter{
+            !$0.done
         }.count
-        let percentage =  Double((prioCount * 10000) / tasks.count) / 10000
+        let percentage =  Double((prioNotDoneCount * 10000) / (tasks.count - tasks.filter{$0.done}.count) ) / 10000
         return percentage
     }
                     
@@ -124,10 +127,9 @@ struct PieChart : View {
                 }
 
 struct pieView: View {
-    @State var tasks : FetchedResults<Task>
     @Binding var highPrio : String
     var body: some View {
-        PieChart( tasks: $tasks, highPrio: $highPrio)
+        PieChart( highPrio: $highPrio)
         }
     }
 
