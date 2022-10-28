@@ -56,7 +56,7 @@ struct PieChart : View {
     
     var body : some View {
         ZStack {
-            if tasks.count > 0 {
+            if tasks.filter{!$0.done}.count > 0 {
                 ForEach(0..<viewModel.data.count, id: \.self) {index in
                     let currentData = viewModel.data[index]
                     let currentEndDegree = getPercentage(desc: currentData.description) * 360
@@ -109,8 +109,12 @@ struct PieChart : View {
         let prioNotDoneCount = prioCount.filter{
             !$0.done
         }.count
-        let percentage =  Double((prioNotDoneCount * 10000) / (tasks.count - tasks.filter{$0.done}.count) ) / 10000
-        return percentage
+        var percentage = 0.0
+        
+        if (tasks.count - tasks.filter{$0.done}.count) != 0 {
+            percentage =  Double((prioNotDoneCount * 10000) / (tasks.count - tasks.filter{$0.done}.count) ) / 10000
+        }
+       return percentage
     }
                     
     private func getLabelCoordinate (in geoSize :CGSize, for degree : Double) -> CGPoint {

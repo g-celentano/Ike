@@ -17,11 +17,14 @@ struct CompletedTaskView: View {
         VStack{
             List{
                 ForEach(tasks){ task in
-                    Text(task.taskName ?? "Unknown task name").listRowBackground(Color("\(priorities[Int(task.priority)]) Task Priority"))
+                    if task.done {
+                        Text(task.taskName ?? "Unknown task name").listRowBackground(Color("\(priorities[Int(task.priority)]) Task Priority"))
+                    }
                 }.onDelete(perform: delete)
                 
-            }.frame(width: screenWidth*0.9, height: screenHeight*0.85)
-                .cornerRadius(20)
+            }
+            .frame(width: screenWidth*0.9, height: screenHeight*0.85)
+            .cornerRadius(20)
         }.navigationTitle("Completed Tasks")
     }
     func delete(at offsets: IndexSet){
