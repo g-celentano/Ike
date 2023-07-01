@@ -17,10 +17,10 @@ Based on the schematization of the matrix, the application, at this stage, just 
 
 # Screenshots of the app
 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/ff0b6489-2aa1-459e-8dd6-b11ab224e8d7" width = "30%" height="30%"> 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/1014cebb-e3ed-45d0-a60d-cafcf6689018" width = "30%" height="30%"> 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/71ecce9b-1e38-48cf-8b9d-edeaff221a0c" width = "30%" height="30%"> 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/aa44c62b-2ad2-458d-bc9f-f2b8aa37a778" width = "30%" height="30%"> 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/ab5b0a55-da21-478d-9dfc-6d1ebf2c5c36" width = "30%" height="30%"> 
-<img src= "https://github.com/g-celentano/Ike/assets/111139129/10de6709-2442-47d0-8189-7c58359b9d9d" width = "30%" height="30%"> 
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/ff0b6489-2aa1-459e-8dd6-b11ab224e8d7" width = "30%" height="30%"></kbd> 
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/1014cebb-e3ed-45d0-a60d-cafcf6689018" width = "30%" height="30%"></kbd>
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/71ecce9b-1e38-48cf-8b9d-edeaff221a0c" width = "30%" height="30%"></kbd> 
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/aa44c62b-2ad2-458d-bc9f-f2b8aa37a778" width = "30%" height="30%"></kbd> 
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/ab5b0a55-da21-478d-9dfc-6d1ebf2c5c36" width = "30%" height="30%"></kbd> 
+<kbd><img src= "https://github.com/g-celentano/Ike/assets/111139129/10de6709-2442-47d0-8189-7c58359b9d9d" width = "30%" height="30%"></kbd> 
 
