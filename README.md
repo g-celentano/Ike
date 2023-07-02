@@ -2,7 +2,7 @@
 
 # Ike
 **Ike** is a time-scheduling app the helps you to organize and better use your time, based on the *Eisenhower* matrix, meaning that every task you need to do can get a priority based on the position inside of this Eisenhower matrix.
-**Why Ike?** you could be asking... simply enough it was an Eisenhower nickname.
+"**Why Ike?**" you could be asking... simply enough it was an Eisenhower nickname.
 
 ## How does the Eisenhower matrix work?
 ### Eisenhower matrix follows this scheme that helps understand the priority of each task:
