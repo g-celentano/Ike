@@ -32,6 +32,8 @@ let NotFrequencies = [
 ]
 
 import SwiftUI
+
+
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
@@ -256,7 +258,7 @@ struct AddTaskModalView: View {
                     .frame(width: screenWidth*0.9, height: screenHeight*0.1)
                     .padding(.top, screenHeight*0.01)
                     
-                  /*HStack{
+                /*  HStack{
                         Text("Notifications Frequency").font(.title3).fontWeight(.semibold)
                         Spacer()
                         Picker("", selection: $selectedNotFreq) {
@@ -267,8 +269,8 @@ struct AddTaskModalView: View {
                     }
                     .frame(width: screenWidth*0.9, alignment: .centerLastTextBaseline)
                     .padding(.top, screenWidth*0.05)
-                   */
-                    
+                   
+                    */
                     Spacer()
                     HStack{
                         Button(action: {
