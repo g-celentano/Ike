@@ -13,7 +13,7 @@
 |**Not Important**| Delegate It | Delete It |
 
 ## How does the app use this matrix?
-Based on the schematization of the matrix, the application, at this stage, just helps recording all the tasks you need to do, and according on the importance and urgency of it, the app helps you understand what to do first, with the possibility to see the list of tasks ordered by priority or by deadline, and to not get lost with the amount of tasks, there's also a pie chart visualization, to better understand how many tasks of each priority are there.
+Based on the schematization of the matrix, the application, at this stage, just helps recording all the tasks you need to do, and according to the importance and urgency of it, the app helps you understand what to do first, with the possibility to see the list of tasks ordered by priority or by deadline, and to not get lost with the amount of tasks, there's also a pie chart visualization, to better understand how many tasks of each priority are there.
 
 ## Screenshots of the app
 <img src="https://github.com/g-celentano/Ike/assets/111139129/7c45a16c-62e2-4790-baee-4b08eaee03f5" width="30%" height="30%"> &nbsp;&nbsp;&nbsp;&nbsp;
